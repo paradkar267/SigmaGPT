@@ -51,6 +51,11 @@ app.use(
     credentials: true,
   }),
 );
+app.use(cors({
+  origin: "https://6a141a242b0a5d4ea155af99--sigmachatgpt.netlify.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 app.use(
   session({
