@@ -155,5 +155,10 @@ const startServer = async () => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
+const cors = require('cors');
+app.use(cors({
+  origin: 'https://6a141d9f22605f56e72f30bd--sigmachatgpt.netlify.app',
+  credentials: true
+}));
 
 startServer();
