@@ -11,14 +11,30 @@ import passport from "./utils/passport.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+const isProduction = process.env.NODE_ENV === "production";
 const DNS_SERVERS = (process.env.DNS_SERVERS || "1.1.1.1,8.8.8.8")
   .split(",")
   .map((server) => server.trim())
   .filter(Boolean);
-const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:5173,http://127.0.0.1:5173")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
+
+const parseCsv = (value) =>
+  value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+const allowedOrigins = parseCsv(
+  process.env.FRONTEND_URL || "http://localhost:5173,http://127.0.0.1:5173",
+);
+const sessionSameSite = process.env.SESSION_SAME_SITE || (isProduction ? "none" : "lax");
+const sessionSecure =
+  process.env.SESSION_COOKIE_SECURE === undefined
+    ? isProduction
+    : process.env.SESSION_COOKIE_SECURE === "true";
+const trustProxy =
+  process.env.TRUST_PROXY === undefined
+    ? isProduction
+    : process.env.TRUST_PROXY === "true";
 
 const isAllowedOrigin = (origin) => {
   if (!origin || allowedOrigins.includes(origin)) return true;
@@ -37,6 +53,10 @@ if (DNS_SERVERS.length > 0) {
   dns.setServers(DNS_SERVERS);
 }
 
+if (trustProxy) {
+  app.set("trust proxy", 1);
+}
+
 app.use(express.json());
 app.use(
   cors({
@@ -51,11 +71,6 @@ app.use(
     credentials: true,
   }),
 );
-app.use(cors({
-  origin: "https://6a141a242b0a5d4ea155af99--sigmachatgpt.netlify.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
 
 app.use(
   session({
@@ -65,8 +80,8 @@ app.use(
     cookie: {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      sameSite: "lax",
-      secure: false,
+      sameSite: sessionSameSite,
+      secure: sessionSecure,
     },
   }),
 );

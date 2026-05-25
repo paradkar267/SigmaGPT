@@ -2,6 +2,7 @@ import "./sidebar.css";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { v1 as uuidv1 } from "uuid";
 import blackLogo from "./assets/blacklogo.png";
+import { apiFetch } from "./api.js";
 import { MyContext } from "./Mycontext.jsx";
 import { useAuth } from "./useAuth.js";
 
@@ -34,9 +35,7 @@ function Sidebar() {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/api/thread", {
-        credentials: "include",
-      });
+      const response = await apiFetch("/thread");
       const data = await response.json();
 
       if (!response.ok) {
@@ -74,9 +73,8 @@ function Sidebar() {
     event.stopPropagation();
 
     try {
-      const response = await fetch(`http://localhost:8000/api/thread/${threadId}`, {
+      const response = await apiFetch(`/thread/${threadId}`, {
         method: "DELETE",
-        credentials: "include",
       });
 
       if (response.ok) {
@@ -117,10 +115,8 @@ function Sidebar() {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/api/thread/${threadId}`, {
+      const response = await apiFetch(`/thread/${threadId}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({ title }),
       });
       const data = await response.json();
@@ -159,9 +155,7 @@ function Sidebar() {
     setCurrentThreadId(newthreadId);
 
     try {
-      const response = await fetch(`http://localhost:8000/api/thread/${newthreadId}`, {
-        credentials: "include",
-      });
+      const response = await apiFetch(`/thread/${newthreadId}`);
 
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`);

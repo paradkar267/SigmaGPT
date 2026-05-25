@@ -1,17 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext.js";
-
-const API = "http://localhost:8000/api/auth";
-
-const apiFetch = (path, options = {}) => {
-  const { headers, ...rest } = options;
-
-  return fetch(`${API}${path}`, {
-    credentials: "include",
-    headers: { "Content-Type": "application/json", ...headers },
-    ...rest,
-  });
-};
+import { apiFetch } from "./api.js";
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -20,7 +9,7 @@ export default function AuthProvider({ children }) {
   const [activeTab, setActiveTab] = useState("login");
 
   useEffect(() => {
-    apiFetch("/me")
+    apiFetch("/auth/me")
       .then((res) => (res.ok ? res.json() : null))
       .then((userData) => {
         if (userData) setUser(userData);
@@ -30,7 +19,7 @@ export default function AuthProvider({ children }) {
   }, []);
 
   const login = useCallback(async (email, password) => {
-    const res = await apiFetch("/login", {
+    const res = await apiFetch("/auth/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
@@ -42,7 +31,7 @@ export default function AuthProvider({ children }) {
   }, []);
 
   const signup = useCallback(async (name, email, password) => {
-    const res = await apiFetch("/signup", {
+    const res = await apiFetch("/auth/signup", {
       method: "POST",
       body: JSON.stringify({ name, email, password }),
     });
@@ -55,7 +44,7 @@ export default function AuthProvider({ children }) {
 
   const logout = useCallback(async () => {
     try {
-      await apiFetch("/logout", { method: "POST" });
+      await apiFetch("/auth/logout", { method: "POST" });
     } finally {
       setUser(null);
       setShowAuthModal(false);

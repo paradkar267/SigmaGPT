@@ -145,6 +145,7 @@ Open a second terminal:
 
 ```bash
 cd Frontend
+cp .env.example .env
 npm install
 npm run dev
 ```
@@ -156,6 +157,26 @@ http://localhost:5173
 ```
 
 If port `5173` is busy, Vite may use `5174`.
+
+## Deployment Environment
+
+The deployed frontend cannot call `http://localhost:8000`; that would point to the visitor's own computer. Deploy the backend first, then set the frontend API URL during the Netlify build.
+
+Netlify frontend environment:
+
+```text
+VITE_API_BASE_URL=https://your-backend-domain.example.com/api
+```
+
+Backend environment:
+
+```text
+NODE_ENV=production
+TRUST_PROXY=true
+FRONTEND_URL=https://your-netlify-site.netlify.app
+```
+
+For deploy previews, add each preview origin to `FRONTEND_URL` or use the stable production Netlify URL when testing auth. Because auth uses cookies, the backend should be served over HTTPS in production.
 
 ## API Routes
 
@@ -261,4 +282,3 @@ git status
 ```
 
 Make sure `.env`, `node_modules`, `dist`, and log files are not included.
-

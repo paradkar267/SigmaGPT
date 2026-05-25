@@ -2,11 +2,10 @@ import "./chatwindow.css";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { ScaleLoader } from "react-spinners";
 import "highlight.js/styles/atom-one-dark.css";
+import { apiFetch } from "./api.js";
 import Chat from "./chat";
 import { MyContext } from "./Mycontext.jsx";
 import { useAuth } from "./useAuth.js";
-
-const API_BASE = "http://localhost:8000/api";
 
 export default function ChatWindow() {
   const {
@@ -90,10 +89,8 @@ export default function ChatWindow() {
       setReply(null);
       setPrevChat((prev) => [...prev, { role: "user", content: message }]);
 
-      const response = await fetch(`${API_BASE}/chat`, {
+      const response = await apiFetch("/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({ message, threadId: currentThreadId }),
       });
 
@@ -181,10 +178,8 @@ export default function ChatWindow() {
         return prev;
       });
 
-      const response = await fetch(`${API_BASE}/chat/regenerate`, {
+      const response = await apiFetch("/chat/regenerate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({
           threadId: currentThreadId,
           message: lastUserMessage.content,
