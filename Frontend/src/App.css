@@ -1,0 +1,21 @@
+*{
+  color:#ecececec;
+  font-family: Roboto, 'Open sans', 'Helvertica Neue', sans-serif;
+}
+
+body{
+  background-color: #1e1e1e;
+  margin:0;
+  padding:0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app{
+  background-color: #1e1e1e;
+  display: flex;
+  height: 100vh;
+  text-align: left;
+  width: 100%;
+  overflow: hidden;
+}
