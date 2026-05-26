@@ -1,3 +1,4 @@
+// User model: profile fields plus passport-local-mongoose auth fields and helpers.
 import mongoose from "mongoose";
 import passportLocalMongooseModule from "passport-local-mongoose";
 

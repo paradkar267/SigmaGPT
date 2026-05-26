@@ -1,3 +1,4 @@
+// Chat message renderer: shows starter prompts and formats conversation history.
 import "./chat.css";
 import { useContext, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";

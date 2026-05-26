@@ -1,3 +1,4 @@
+// Chat and thread routes: create/read/update/delete threads and generate AI replies.
 import express from "express";
 import { randomUUID } from "node:crypto";
 import mongoose from "mongoose";

@@ -1,3 +1,4 @@
+// Auth provider: manages login/signup/logout state and modal visibility for the app.
 import { useCallback, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext.js";
 import { apiFetch } from "./api.js";

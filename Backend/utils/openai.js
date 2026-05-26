@@ -1,3 +1,4 @@
+// OpenAI client helper: sends a user message and returns the assistant text response.
 import "dotenv/config";
 
 

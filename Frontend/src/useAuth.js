@@ -1,3 +1,4 @@
+// Convenience hook to consume AuthContext with provider-safety validation.
 import { useContext } from "react";
 import { AuthContext } from "./AuthContext.js";
 

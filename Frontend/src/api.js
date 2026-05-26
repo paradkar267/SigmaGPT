@@ -1,3 +1,4 @@
+// API utilities: centralizes backend base URL construction and credentialed fetch calls.
 const trimTrailingSlash = (value) => value.replace(/\/+$/, "");
 
 export const API_BASE = trimTrailingSlash(

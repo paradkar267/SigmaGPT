@@ -1,3 +1,4 @@
+// Sidebar panel: lists threads and supports create, search, rename, delete, and switch.
 import "./sidebar.css";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { v1 as uuidv1 } from "uuid";

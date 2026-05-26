@@ -1,3 +1,4 @@
+// Root app shell: provides chat state context and lays out sidebar/chat/auth modal.
 import "./App.css";
 import { useState } from "react";
 import AuthModal from "./AuthModal.jsx";

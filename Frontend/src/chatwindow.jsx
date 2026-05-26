@@ -1,3 +1,4 @@
+// Main chat workspace: handles message send/regenerate flows and top-bar user actions.
 import "./chatwindow.css";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { ScaleLoader } from "react-spinners";

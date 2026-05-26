@@ -1,3 +1,4 @@
+// Authentication routes: signup, login, logout, and current-user session lookup.
 import express from "express";
 import mongoose from "mongoose";
 import passport from "../utils/passport.js";

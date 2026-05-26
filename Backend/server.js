@@ -1,3 +1,4 @@
+// Backend app bootstrap: configures middleware, auth/session, routes, and database startup.
 import express from "express";
 import "dotenv/config";
 import cors from "cors";

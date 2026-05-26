@@ -1,3 +1,4 @@
+// Thread model: stores chat thread metadata and message history for each user.
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 

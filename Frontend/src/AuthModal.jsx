@@ -1,3 +1,4 @@
+// Authentication modal UI for login and signup workflows.
 import { useState } from "react";
 import "./AuthModal.css";
 import { useAuth } from "./useAuth.js";

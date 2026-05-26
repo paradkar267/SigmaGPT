@@ -1,3 +1,4 @@
+// Passport setup: wires local strategy with user serialization helpers.
 import passport from "passport";
 import User from "../model/user.js";
 
