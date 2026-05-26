@@ -108,10 +108,12 @@ app.get("/demouser", async (req, res, next) => {
     let demoUser = await User.findOne({ email });
 
     if (!demoUser) {
+      const normalizedEmail = email.trim().toLowerCase();
       demoUser = await User.register(
         new User({
           name: "Demo User",
-          email,
+          email: normalizedEmail,
+          username: normalizedEmail,
         }),
         "demopassword",
       );
@@ -131,6 +133,28 @@ app.use((err, req, res, next) => {
   });
 });
 
+const dropLegacyUserIndexes = async () => {
+  try {
+    const indexes = await User.collection.indexes();
+    const hasLegacyUsernameIndex = indexes.some((index) => index.name === "username_1");
+    const hasEmailUniqueIndex = indexes.some(
+      (index) => index.name === "email_1" && index.unique === true,
+    );
+
+    if (hasLegacyUsernameIndex) {
+      await User.collection.dropIndex("username_1");
+      console.log("Dropped legacy users.username_1 index");
+    }
+
+    if (!hasEmailUniqueIndex) {
+      await User.collection.createIndex({ email: 1 }, { unique: true });
+      console.log("Created users.email_1 unique index");
+    }
+  } catch (error) {
+    console.warn("Unable to synchronize user indexes:", error.message);
+  }
+};
+
 const connectDB = async () => {
   if (!process.env.MONGODB_URL) {
     console.warn("MONGODB_URL is not configured. Starting without database connection.");
@@ -141,6 +165,7 @@ const connectDB = async () => {
     await mongoose.connect(process.env.MONGODB_URL, {
       serverSelectionTimeoutMS: 5000,
     });
+    await dropLegacyUserIndexes();
     console.log("Connected to MongoDB");
     return true;
   } catch (error) {
@@ -155,10 +180,5 @@ const startServer = async () => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
-const cors = require('cors');
-app.use(cors({
-  origin: 'https://6a141d9f22605f56e72f30bd--sigmachatgpt.netlify.app',
-  credentials: true
-}));
 
 startServer();

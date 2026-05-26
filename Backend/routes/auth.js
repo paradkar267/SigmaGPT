@@ -28,10 +28,12 @@ router.post("/signup", async (req, res, next) => {
       return res.status(400).json({ error: "Password must be at least 8 characters" });
     }
 
+    const normalizedEmail = email.trim().toLowerCase();
     const user = await User.register(
       new User({
         name: name.trim(),
-        email: email.trim().toLowerCase(),
+        email: normalizedEmail,
+        username: normalizedEmail,
       }),
       password,
     );
@@ -45,6 +47,9 @@ router.post("/signup", async (req, res, next) => {
     });
   } catch (err) {
     if (err.name === "UserExistsError") {
+      return res.status(409).json({ error: "An account with this email already exists" });
+    }
+    if (err.code === 11000) {
       return res.status(409).json({ error: "An account with this email already exists" });
     }
 
